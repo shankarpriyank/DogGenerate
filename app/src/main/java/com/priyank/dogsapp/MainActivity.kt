@@ -10,13 +10,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.priyank.MainViewModel
 import com.priyank.dogsapp.ui.theme.DogsAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
 
-                    val vm = hiltViewModel<MainViewModel>()
+                    //
+                    //    val vm = hiltViewModel<MainViewModel>()
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
@@ -40,8 +41,11 @@ class MainActivity : ComponentActivity() {
                             HomeScreen(onGenerateClick = { navController.navigate(Route.GENERATEDOGS) }, onRecentsClick = { navController.navigate(Route.RECENTS) })
                         }
                         composable(Route.GENERATEDOGS) {
+
+                            GenerateDogsScreen()
                         }
                         composable(Route.RECENTS) {
+                            RecentScreen()
                         }
                     }
                 }

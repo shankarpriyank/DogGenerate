@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
@@ -28,19 +29,21 @@ fun HomeScreen(onGenerateClick: () -> Unit, onRecentsClick: () -> Unit) {
     ) {
         Text(text = "Random Dog Generator!", modifier = Modifier.padding(bottom = 200.dp), fontWeight = FontWeight.Bold, fontSize = 25.sp)
         Button(
+            shape = RoundedCornerShape(50),
             onClick = onGenerateClick,
             border = BorderStroke(width = 1.dp, color = Color.Black),
             colors = ButtonDefaults.buttonColors(backgroundColor = PrimaryButtonColor)
         ) {
-            Text(text = "Generate Dogs", modifier = Modifier.background(PrimaryButtonColor))
+            Text(text = "Generate Dogs", modifier = Modifier.background(PrimaryButtonColor), color = Color.White)
         }
 
         Button(
+            shape = RoundedCornerShape(50),
             onClick = onRecentsClick,
             border = BorderStroke(width = 1.dp, color = Color.Black),
             colors = ButtonDefaults.buttonColors(backgroundColor = PrimaryButtonColor)
         ) {
-            Text(text = " My Generated Dogs", modifier = Modifier.background(PrimaryButtonColor))
+            Text(text = " My Generated Dogs", modifier = Modifier.background(PrimaryButtonColor), color = Color.White)
         }
     }
 }

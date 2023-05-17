@@ -2,18 +2,23 @@ package com.priyank.dogsapp.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.priyank.dogsapp.data.model.DogInfo
 
 @Dao
 interface DogsDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertImage(image: String)
+    @Insert()
+    suspend fun insertImage(image: DogInfo)
 
-    @Query("SELECT * FROM dogTable ORDER BY id DESC LIMIT 20")
+    @Query("SELECT * FROM dogTable O")
     suspend fun getAllImages(): List<DogInfo>
 
-    @Query("DELETE FROM dogTable where id NOT IN (SELECT id from dogTable ORDER BY id ASC LIMIT 20)")
-    fun clearTable()
+    @Query("SELECT COUNT(*) FROM dogTable")
+    suspend fun getTotalEntries(): Int
+
+    @Query("DELETE FROM dogTable WHERE id = (SELECT MIN(id) FROM dogTable)")
+    suspend fun deleteFirstEntry()
+
+    @Query("DELETE FROM dogTable")
+    suspend fun deleteAllEntries()
 }

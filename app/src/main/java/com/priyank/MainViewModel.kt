@@ -1,28 +1,55 @@
 package com.priyank
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.priyank.dogsapp.data.model.DogInfo
+import com.priyank.dogsapp.data.local.DogDatabase
 import com.priyank.dogsapp.data.remote.DogsApi
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    val dogsApi: DogsApi
+    val dogsApi: DogsApi,
+    val dogDb: DogDatabase
 ) : ViewModel() {
 
-    var imageUrl = mutableStateOf("")
-        private set
+    private val _imageUrl = MutableStateFlow("")
+    val imageUrl: StateFlow<String>
+        get() = _imageUrl
 
-    fun getDogs() {
-        var dog = DogInfo(0, "", "")
-        viewModelScope.launch(Dispatchers.IO) {
-            dog = dogsApi.getImages()
+    private val _state = MutableStateFlow(true)
+    val state: StateFlow<Boolean>
+        get() = _state
+
+    private val _recents = MutableStateFlow<List<String>>(emptyList())
+    val recents: StateFlow<List<String>>
+        get() = _recents
+
+    suspend fun getDogs() {
+
+        _state.value = false
+
+        val dog = dogsApi.getImages()
+
+        _imageUrl.value = dog.message!!
+
+        val totalEntries = dogDb.DogsDao.getTotalEntries()
+
+        if (totalEntries > 20) {
+            dogDb.DogsDao.deleteFirstEntry()
         }
-        imageUrl.value = dog.message!!
+        dogDb.DogsDao.insertImage(dog)
+        _state.value = true
+    }
+
+    suspend fun getRecentDogs() {
+        val list = dogDb.DogsDao.getAllImages()
+        _recents.value = list.map { it.message!! }
+    }
+
+    suspend fun clearDogs() {
+        dogDb.DogsDao.deleteAllEntries()
+        _recents.value = emptyList()
     }
 }

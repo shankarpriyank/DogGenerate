@@ -31,6 +31,6 @@ class MainModule {
     fun provideDogsDatabase(app: Application): DogDatabase {
         return Room.databaseBuilder(
             app, DogDatabase::class.java, "dog_db"
-        ).fallbackToDestructiveMigration().build()
+        ).build()
     }
 }
