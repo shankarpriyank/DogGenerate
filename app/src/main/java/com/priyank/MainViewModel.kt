@@ -36,7 +36,7 @@ class MainViewModel @Inject constructor(
 
         val totalEntries = dogDb.DogsDao.getTotalEntries()
 
-        if (totalEntries > 20) {
+        if (totalEntries >= 20) {
             dogDb.DogsDao.deleteFirstEntry()
         }
         dogDb.DogsDao.insertImage(dog)

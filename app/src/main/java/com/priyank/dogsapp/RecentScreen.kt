@@ -5,8 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -46,9 +48,9 @@ fun RecentScreen() {
 
         val images = vm.recents.collectAsState()
 
-        LazyRow(modifier = Modifier.padding(10.dp).size(400.dp)) {
+        LazyRow(modifier = Modifier.padding(bottom = 10.dp).width(400.dp).height(300.dp)) {
             items(items = images.value) {
-                AsyncImage(model = it, contentDescription = "gg", modifier = Modifier.fillMaxSize().padding(10.dp), contentScale = ContentScale.Fit)
+                AsyncImage(model = it, contentDescription = "gg", modifier = Modifier.fillMaxWidth().padding(4.dp), contentScale = ContentScale.FillBounds)
             }
         }
 
